@@ -11,6 +11,8 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'utils/firebase_notification_handler.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -20,11 +22,7 @@ class MyApp extends StatelessWidget {
     Firestore.instance.collection('books').document()
         .setData({ 'title': 'title', 'author': 'kabir' });
 
-    final Firestore _db = Firestore.instance;
-    final FirebaseMessaging _fcm = FirebaseMessaging();
-    if (Platform.isIOS) {
-      _fcm.requestNotificationPermissions(IosNotificationSettings());
-    }
+    new FirebaseNotifications().setUpFirebase();
     return ChangeNotifierProvider<CartBloc>(
       builder: (context) => CartBloc(),
       child: MaterialApp(
