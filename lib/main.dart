@@ -7,6 +7,9 @@ import 'testUI/adsqqq.dart';
 import 'testUI/collapsingToolbar.dart';
 import 'testUI/flare.dart';
 import 'ui/splashScreen_page.dart';
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,6 +19,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Firestore.instance.collection('books').document()
         .setData({ 'title': 'title', 'author': 'kabir' });
+
+    final Firestore _db = Firestore.instance;
+    final FirebaseMessaging _fcm = FirebaseMessaging();
+    if (Platform.isIOS) {
+      _fcm.requestNotificationPermissions(IosNotificationSettings());
+    }
     return ChangeNotifierProvider<CartBloc>(
       builder: (context) => CartBloc(),
       child: MaterialApp(
